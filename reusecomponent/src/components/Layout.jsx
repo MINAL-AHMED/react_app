@@ -21,6 +21,9 @@ function Layout(props) {
             <li>
               <Link to="/help">Help</Link>
             </li>
+            <li>
+              <Link to="/clock">Clock</Link>
+            </li>
           </ul>
         </div>
       </nav>
