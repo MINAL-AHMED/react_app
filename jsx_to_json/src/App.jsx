@@ -1,6 +1,16 @@
+/**
+ * DONE: Handle User Input Fields
+ * Done: Handle operations
+ * DONE: Handle a list of histories
+ * DONE: Render history list
+ * DONE: Restore the history
+ */
+
 import { useState } from "react";
-import Inputs from "./components/Inputs";
-import Operations from "./components/Operations";
+import HistorySection from "./components/history/HistorySection";
+import InputSection from "./components/inputs/InputSection";
+import OperationSection from "./components/operations/OperationSection";
+
 function* generateId() {
   let id = 0;
 
@@ -47,8 +57,6 @@ const App = () => {
     const result = f(operation);
     setResult(result);
 
-    // setResult(eval(`${inputState.a} ${operation} ${inputState.b}`));
-
     const history = {
       id: getId.next().value,
       inputs: { ...inputState },
@@ -65,77 +73,19 @@ const App = () => {
     setRestoredHistory(history.id);
   };
 
-  // const handleInputA = (e) => {
-  // 	setInputState({
-  // 		...inputState,
-  // 		a: parseInt(e.target.value),
-  // 	});
-  // };
-
-  // const handleInputB = (e) => {
-  // 	setInputState({
-  // 		...inputState,
-  // 		b: parseInt(e.target.value),
-  // 	});
-  // };
-
-  // const handleInputChange = (key, value) => {
-  // 	setInputState({
-  // 		...inputState,
-  // 		[key]: parseInt(value),
-  // 	});
-  // };
-
-  // const handleInputChange = (inp) => {
-  // 	setInputState({
-  // 		...inputState,
-  // 		...inp,
-  // 	});
-  // };
-
   return (
     <div style={{ width: "50%", margin: "0 auto" }}>
       <h1>Result: {result}</h1>
-      <div>
-        <Inputs inputState={inputState} handleInputChange={handleInputChange} />
-      </div>
-      <Operations
+      <InputSection inputs={inputState} handleInputChange={handleInputChange} />
+      <OperationSection
         handleArithmeticOps={handleArithmeticOps}
         handleClearOps={handleClearOps}
       />
-
-      <div>
-        <p>History</p>
-        {histories.length === 0 ? (
-          <p>
-            <small>There is no history</small>
-          </p>
-        ) : (
-          <ul>
-            {histories.map((history) => (
-              <li key={history.id}>
-                <p>
-                  Operations: {history.inputs.a} {history.operation}
-                  {history.inputs.b}, Result = {history.result}
-                </p>
-                <small>
-                  {history.date.toLocaleDateString()}
-                  {history.date.toLocaleTimeString()}
-                </small>
-                <br />
-                <button
-                  onClick={() => handleRestoreBtn(history)}
-                  disabled={
-                    restoredHistory !== null && restoredHistory === history.id
-                  }
-                >
-                  Restore
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
+      <HistorySection
+        histories={histories}
+        handleRestoreBtn={handleRestoreBtn}
+        restoredHistory={restoredHistory}
+      />
     </div>
   );
 };
